@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anum Saeed — AI/ML Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050810;
+  --bg2: #0a0f1e;
+  --bg3: #0f1629;
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --accent: #4F8EF7;
+  --accent2: #7CAAFF;
+  --accent3: #2563EB;
+  --glow: rgba(79,142,247,0.25);
+  --gold: #E8C97A;
+  --teal: #38BDF8;
+  --text: #F0F4FF;
+  --text2: #8B9CC8;
+  --text3: #4A5680;
+  --font-head: 'Syne', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-serif: 'Instrument Serif', serif;
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ─────────────────────────────── */
+#cursor {
+  position: fixed; top:0; left:0; pointer-events:none; z-index:9999;
+  transition: transform 0.1s ease;
+}
+#cursor-dot {
+  width:8px; height:8px; background:var(--accent); border-radius:50%;
+  position:absolute; top:-4px; left:-4px;
+  transition: transform 0.15s ease, background 0.2s;
+}
+#cursor-ring {
+  width:36px; height:36px; border:1.5px solid rgba(79,142,247,0.5);
+  border-radius:50%; position:absolute; top:-18px; left:-18px;
+  transition: transform 0.35s cubic-bezier(0.23,1,0.32,1), border-color 0.2s, width 0.2s, height 0.2s;
+}
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring { width:52px; height:52px; top:-26px; left:-26px; border-color: var(--accent); }
+body:has(a:hover) #cursor-dot,
+body:has(button:hover) #cursor-dot { transform: scale(0.5); }
+
+/* ── NOISE TEXTURE OVERLAY ─────────────────────── */
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.4;
+}
+
+/* ── AMBIENT GLOW ──────────────────────────────── */
+.ambient {
+  position:fixed; pointer-events:none; z-index:0; border-radius:50%; filter:blur(120px); opacity:0.12;
+}
+.ambient-1 { width:800px; height:800px; background:var(--accent3); top:-200px; left:-200px; animation: drift1 20s ease-in-out infinite; }
+.ambient-2 { width:600px; height:600px; background:#7C3AED; top:40%; right:-150px; animation: drift2 25s ease-in-out infinite; }
+.ambient-3 { width:400px; height:400px; background:var(--teal); bottom:10%; left:30%; animation: drift3 18s ease-in-out infinite; }
+
+@keyframes drift1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,80px)} }
+@keyframes drift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-80px,40px)} }
+@keyframes drift3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,-60px)} }
+
+/* ── LAYOUT ────────────────────────────────────── */
+.container { max-width:1100px; margin:0 auto; padding:0 40px; position:relative; z-index:1; }
+
+/* ── NAV ───────────────────────────────────────── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:20px 40px;
+  display:flex; align-items:center; justify-content:space-between;
+  transition: background 0.4s, backdrop-filter 0.4s;
+}
+nav.scrolled {
+  background: rgba(5,8,16,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-head); font-weight:800; font-size:18px;
+  letter-spacing:-0.5px; color:var(--text);
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none;
+}
+.nav-logo span { color:var(--accent); }
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a {
+  font-family:var(--font-mono); font-size:13px; color:var(--text2);
+  text-decoration:none; letter-spacing:0.05em;
+  transition:color 0.2s;
+  position:relative;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:-3px; left:0; right:0; height:1px;
+  background:var(--accent); transform:scaleX(0); transform-origin:left;
+  transition:transform 0.3s ease;
+}
+.nav-links a:hover { color:var(--accent); }
+.nav-links a:hover::after { transform:scaleX(1); }
+
+/* ── HERO ──────────────────────────────────────── */
+#hero {
+  min-height:100vh; display:flex; align-items:center;
+  padding-top:80px; position:relative; overflow:hidden;
+}
+.hero-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+}
+.hero-tag {
+  font-family:var(--font-mono); font-size:12px; color:var(--accent);
+  letter-spacing:0.15em; text-transform:uppercase;
+  display:inline-flex; align-items:center; gap:8px; margin-bottom:24px;
+  opacity:0; animation: fadeUp 0.8s 0.2s forwards;
+}
+.hero-tag::before {
+  content:''; display:block; width:30px; height:1px; background:var(--accent);
+}
+.hero-name {
+  font-family:var(--font-head); font-size:clamp(52px,6vw,80px); font-weight:800;
+  line-height:1.0; letter-spacing:-2px; color:var(--text);
+  opacity:0; animation: fadeUp 0.8s 0.35s forwards;
+}
+.hero-name .accent { color:var(--accent); display:block; }
+.hero-title {
+  font-family:var(--font-serif); font-style:italic;
+  font-size:clamp(20px,2.5vw,28px); color:var(--gold);
+  margin-top:12px; margin-bottom:24px;
+  opacity:0; animation: fadeUp 0.8s 0.5s forwards;
+}
+.hero-desc {
+  font-family:var(--font-mono); font-size:14px; color:var(--text2);
+  max-width:440px; line-height:1.8;
+  opacity:0; animation: fadeUp 0.8s 0.65s forwards;
+}
+.hero-ctas {
+  display:flex; gap:16px; margin-top:36px;
+  opacity:0; animation: fadeUp 0.8s 0.8s forwards;
+}
+.btn-primary {
+  padding:14px 32px; background:var(--accent); color:#fff;
+  font-family:var(--font-mono); font-size:13px; font-weight:400;
+  letter-spacing:0.08em; border:none; cursor:none;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-primary:hover { background:var(--accent2); transform:translateY(-2px); }
+.btn-outline {
+  padding:14px 32px; background:transparent; color:var(--text2);
+  font-family:var(--font-mono); font-size:13px; letter-spacing:0.08em;
+  border:1px solid var(--border2); cursor:none;
+  transition: color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.btn-outline:hover { color:var(--accent); border-color:var(--accent); transform:translateY(-2px); }
+
+/* Hero right: terminal card */
+.hero-terminal {
+  background: var(--bg2); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden;
+  opacity:0; animation: fadeIn 1s 0.9s forwards;
+  box-shadow: 0 0 80px rgba(79,142,247,0.08);
+}
+.terminal-bar {
+  background:var(--bg3); padding:12px 20px;
+  display:flex; align-items:center; gap:8px;
+  border-bottom:1px solid var(--border);
+}
+.dot { width:10px; height:10px; border-radius:50%; }
+.dot-r { background:#FF5F57; }
+.dot-y { background:#FEBC2E; }
+.dot-g { background:#28C840; }
+.terminal-title { font-size:12px; color:var(--text3); margin-left:8px; letter-spacing:0.05em; }
+.terminal-body { padding:24px; font-size:13px; line-height:2; }
+.t-comment { color:var(--text3); }
+.t-key { color:var(--teal); }
+.t-str { color:var(--gold); }
+.t-accent { color:var(--accent); }
+.t-line { display:flex; gap:10px; }
+.cursor-blink { display:inline-block; width:8px; height:14px; background:var(--accent); animation:blink 1s step-end infinite; vertical-align:middle; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* hero stats */
+.hero-stats {
+  display:flex; gap:32px; margin-top:40px;
+  opacity:0; animation: fadeUp 0.8s 1s forwards;
+}
+.stat-item { border-left:2px solid var(--accent); padding-left:16px; }
+.stat-num { font-family:var(--font-head); font-size:28px; font-weight:800; color:var(--text); }
+.stat-label { font-size:12px; color:var(--text3); letter-spacing:0.05em; }
+
+/* ── SECTION BASE ──────────────────────────────── */
+section { padding:100px 0; position:relative; z-index:1; }
+.section-label {
+  font-size:11px; color:var(--accent); letter-spacing:0.2em;
+  text-transform:uppercase; margin-bottom:12px;
+  display:flex; align-items:center; gap:10px;
+}
+.section-label::before { content:''; display:block; width:24px; height:1px; background:var(--accent); }
+.section-title {
+  font-family:var(--font-head); font-size:clamp(32px,4vw,52px); font-weight:800;
+  line-height:1.1; letter-spacing:-1px; color:var(--text);
+  margin-bottom:60px;
+}
+.section-title em { font-family:var(--font-serif); font-style:italic; color:var(--gold); font-weight:400; }
+
+/* reveal animations */
+.reveal { opacity:0; transform:translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ── SKILLS SECTION ────────────────────────────── */
+.skills-grid {
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:20px;
+}
+.skill-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:28px;
+  transition: background 0.3s, border-color 0.3s, transform 0.3s;
+  position:relative; overflow:hidden;
+}
+.skill-card::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(79,142,247,0.06) 0%, transparent 60%);
+  opacity:0; transition:opacity 0.3s;
+}
+.skill-card:hover { background:var(--surface2); border-color:var(--border2); transform:translateY(-4px); }
+.skill-card:hover::before { opacity:1; }
+.skill-icon { font-size:24px; margin-bottom:16px; }
+.skill-cat { font-family:var(--font-head); font-size:15px; font-weight:700; color:var(--text); margin-bottom:12px; }
+.skill-tags { display:flex; flex-wrap:wrap; gap:6px; }
+.tag {
+  font-size:11px; padding:4px 10px; background:rgba(79,142,247,0.1);
+  color:var(--accent2); border:1px solid rgba(79,142,247,0.2); border-radius:3px;
+  letter-spacing:0.03em;
+}
+
+/* ── PROJECTS ──────────────────────────────────── */
+.projects-filter {
+  display:flex; gap:10px; flex-wrap:wrap; margin-bottom:48px;
+}
+.filter-btn {
+  padding:8px 20px; background:transparent; border:1px solid var(--border);
+  color:var(--text2); font-family:var(--font-mono); font-size:12px; letter-spacing:0.05em;
+  cursor:none; transition:all 0.2s; border-radius:2px;
+}
+.filter-btn.active, .filter-btn:hover { background:var(--accent); border-color:var(--accent); color:#fff; }
+.projects-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:24px; }
+.project-card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:12px; padding:28px; cursor:none;
+  transition:all 0.3s ease, opacity 0.3s ease, transform 0.3s ease; position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+}
+.project-card::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--teal));
+  transform:scaleX(0); transform-origin:left; transition:transform 0.3s;
+}
+.project-card:hover { border-color:var(--border2); transform:translateY(-4px); box-shadow:0 20px 60px rgba(0,0,0,0.4); }
+.project-card:hover::after { transform:scaleX(1); }
+.project-card[style*="display:none"] { display:none !important; }
+.project-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+.project-cat {
+  font-size:10px; letter-spacing:0.15em; text-transform:uppercase;
+  padding:3px 10px; border-radius:2px; font-family:var(--font-mono);
+}
+.cat-genai { background:rgba(79,142,247,0.15); color:var(--accent); border:1px solid rgba(79,142,247,0.3); }
+.cat-cv { background:rgba(56,189,248,0.15); color:var(--teal); border:1px solid rgba(56,189,248,0.3); }
+.cat-medical { background:rgba(52,211,153,0.15); color:#34D399; border:1px solid rgba(52,211,153,0.3); }
+.cat-ml { background:rgba(232,201,122,0.15); color:var(--gold); border:1px solid rgba(232,201,122,0.3); }
+.project-name { font-family:var(--font-head); font-size:16px; font-weight:700; color:var(--text); margin-bottom:10px; line-height:1.3; }
+.project-desc { font-size:13px; color:var(--text2); line-height:1.7; flex:1; margin-bottom:20px; }
+.project-stack { display:flex; flex-wrap:wrap; gap:5px; }
+.stack-tag { font-size:10px; padding:3px 8px; background:var(--surface); border:1px solid var(--border); color:var(--text3); border-radius:2px; }
+
+/* ── EXPERIENCE ────────────────────────────────── */
+.timeline { position:relative; padding-left:40px; }
+.timeline::before {
+  content:''; position:absolute; left:8px; top:0; bottom:0;
+  width:1px; background:linear-gradient(to bottom, var(--accent), transparent);
+}
+.timeline-item { position:relative; margin-bottom:48px; }
+.timeline-item::before {
+  content:''; position:absolute; left:-36px; top:6px;
+  width:10px; height:10px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--bg);
+  box-shadow:0 0 12px var(--accent);
+}
+.tl-date { font-size:11px; color:var(--accent); letter-spacing:0.1em; margin-bottom:6px; }
+.tl-role { font-family:var(--font-head); font-size:18px; font-weight:700; color:var(--text); }
+.tl-company { font-size:13px; color:var(--text2); margin-bottom:12px; }
+.tl-bullets { list-style:none; }
+.tl-bullets li { font-size:13px; color:var(--text2); padding:4px 0; padding-left:16px; position:relative; line-height:1.7; }
+.tl-bullets li::before { content:'›'; position:absolute; left:0; color:var(--accent); }
+
+/* ── AI CHAT ───────────────────────────────────── */
+#ai-chat { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.chat-wrapper {
+  display:grid; grid-template-columns:1fr 1.4fr; gap:60px; align-items:start;
+}
+.chat-info { padding-top:12px; }
+.chat-desc { font-size:14px; color:var(--text2); line-height:1.8; margin-bottom:24px; }
+.chat-prompts { display:flex; flex-direction:column; gap:8px; }
+.chat-prompt-btn {
+  text-align:left; padding:12px 16px;
+  background:var(--surface); border:1px solid var(--border);
+  color:var(--text2); font-family:var(--font-mono); font-size:12px;
+  cursor:none; transition:all 0.2s; border-radius:6px;
+}
+.chat-prompt-btn:hover { background:var(--surface2); border-color:var(--accent); color:var(--accent); }
+.chat-prompt-btn::before { content:'→  '; color:var(--accent); }
+
+.chat-box {
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden;
+  box-shadow:0 0 60px rgba(79,142,247,0.06);
+}
+.chat-header {
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  padding:16px 20px; display:flex; align-items:center; gap:12px;
+}
+.chat-avatar {
+  width:32px; height:32px; border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--teal));
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:700; color:#fff; font-family:var(--font-head);
+}
+.chat-name { font-family:var(--font-head); font-size:14px; font-weight:700; }
+.chat-status { font-size:11px; color:#34D399; display:flex; align-items:center; gap:4px; }
+.chat-status::before { content:''; width:6px; height:6px; border-radius:50%; background:#34D399; display:block; }
+.chat-messages { height:320px; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:12px; }
+.chat-messages::-webkit-scrollbar { width:4px; }
+.chat-messages::-webkit-scrollbar-track { background:transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+.msg { max-width:85%; }
+.msg-user { align-self:flex-end; }
+.msg-bot { align-self:flex-start; }
+.msg-bubble {
+  padding:12px 16px; border-radius:10px;
+  font-size:13px; line-height:1.6;
+}
+.msg-user .msg-bubble { background:var(--accent); color:#fff; border-radius:10px 10px 2px 10px; }
+.msg-bot .msg-bubble { background:var(--surface2); color:var(--text); border:1px solid var(--border); border-radius:10px 10px 10px 2px; }
+.msg-bot .msg-bubble.typing { display:flex; gap:4px; align-items:center; padding:14px 16px; }
+.typing-dot { width:6px; height:6px; border-radius:50%; background:var(--text3); animation:typing 1.2s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation-delay:0.2s; }
+.typing-dot:nth-child(3) { animation-delay:0.4s; }
+@keyframes typing { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-5px);opacity:1} }
+.chat-input-row {
+  display:flex; gap:8px; padding:16px;
+  border-top:1px solid var(--border);
+}
+#chat-input {
+  flex:1; background:var(--surface); border:1px solid var(--border);
+  color:var(--text); font-family:var(--font-mono); font-size:13px;
+  padding:12px 16px; border-radius:6px; outline:none;
+  transition:border-color 0.2s;
+}
+#chat-input:focus { border-color:var(--accent); }
+#chat-input::placeholder { color:var(--text3); }
+#chat-send {
+  padding:12px 20px; background:var(--accent); color:#fff; border:none;
+  font-family:var(--font-mono); font-size:13px; cursor:none;
+  border-radius:6px; transition:background 0.2s, transform 0.1s;
+}
+#chat-send:hover { background:var(--accent2); }
+#chat-send:active { transform:scale(0.97); }
+
+/* ── EDUCATION ─────────────────────────────────── */
+.edu-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.edu-card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:12px; padding:28px; position:relative; overflow:hidden;
+}
+.edu-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--teal));
+}
+.edu-degree { font-family:var(--font-head); font-size:16px; font-weight:700; color:var(--text); margin-bottom:6px; }
+.edu-uni { font-size:13px; color:var(--accent); margin-bottom:4px; }
+.edu-date { font-size:12px; color:var(--text3); }
+.edu-note { font-size:12px; color:var(--text2); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+
+/* ── AWARDS ────────────────────────────────────── */
+.awards-row { display:flex; flex-wrap:wrap; gap:16px; }
+.award-chip {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 20px; background:var(--surface); border:1px solid var(--border);
+  border-radius:8px; font-size:13px; color:var(--text2);
+  transition:all 0.2s;
+}
+.award-chip:hover { background:var(--surface2); border-color:var(--accent); color:var(--text); }
+.award-chip .award-icon { color:var(--gold); font-size:16px; }
+
+/* ── CONTACT ───────────────────────────────────── */
+.cat-bio { background:rgba(167,139,250,0.15); color:#A78BFA; border:1px solid rgba(167,139,250,0.3); }
+.cat-web { background:rgba(251,146,60,0.15); color:#FB923C; border:1px solid rgba(251,146,60,0.3); }
+.project-date { font-size:10px; color:var(--text3); font-family:var(--font-mono); margin-left:auto; }
+
+/* ── LEADERSHIP & VOLUNTEERSHIP ───────────────── */
+.lv-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+.lv-column {}
+.lv-col-label {
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--font-head); font-size:18px; font-weight:700;
+  color:var(--text); margin-bottom:24px;
+}
+.lv-col-icon { color:var(--accent); font-size:20px; }
+.lv-cards { display:flex; flex-direction:column; gap:16px; }
+.lv-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:20px 24px;
+  transition: background 0.3s, border-color 0.3s, transform 0.2s;
+  position:relative; overflow:hidden;
+}
+.lv-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+  background:linear-gradient(to bottom,var(--accent),var(--teal));
+  opacity:0; transition:opacity 0.3s;
+}
+.lv-card:hover { background:var(--surface2); border-color:var(--border2); transform:translateX(4px); }
+.lv-card:hover::before { opacity:1; }
+.lv-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:4px; }
+.lv-role { font-family:var(--font-head); font-size:14px; font-weight:700; color:var(--text); line-height:1.3; }
+.lv-date { font-size:10px; color:var(--accent); letter-spacing:0.08em; white-space:nowrap; font-family:var(--font-mono); }
+.lv-org { font-size:12px; color:var(--teal); margin-bottom:8px; font-family:var(--font-mono); }
+.lv-detail { font-size:12px; color:var(--text2); line-height:1.7; }
+
+/* ── CONTACT ───────────────────────────────────── */
+.contact{
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+}
+.contact-links { display:flex; flex-direction:column; gap:16px; }
+.contact-link {
+  display:flex; align-items:center; gap:16px;
+  padding:18px 24px; background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; text-decoration:none; color:var(--text);
+  transition:all 0.2s; font-size:14px;
+}
+.contact-link:hover { background:var(--surface2); border-color:var(--accent); transform:translateX(6px); }
+.contact-link-icon { width:36px; height:36px; background:rgba(79,142,247,0.15); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+.contact-cta { text-align:center; }
+.contact-cta-text { font-family:var(--font-head); font-size:clamp(28px,3vw,44px); font-weight:800; letter-spacing:-1px; line-height:1.2; margin-bottom:24px; }
+.contact-cta-sub { font-size:14px; color:var(--text2); margin-bottom:36px; }
+
+/* ── FOOTER ────────────────────────────────────── */
+footer {
+  padding:32px 0; border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; color:var(--text3); text-align:center;
+  position:relative; z-index:1;
+}
+
+/* ── ANIMATIONS ────────────────────────────────── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* ── SCROLLBAR ─────────────────────────────────── */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
+
+/* ── MOBILE ────────────────────────────────────── */
+@media (max-width:768px) {
+  .hero-grid, .chat-wrapper, .edu-grid, .contact-inner, .lv-grid { grid-template-columns:1fr; }
+  .nav-links { display:none; }
+  .container { padding:0 20px; }
+  .hero-terminal { display:none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"><div id="cursor-dot"></div><div id="cursor-ring"></div></div>
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+<div class="ambient ambient-3"></div>
+
+<!-- ── NAV ─────────────────────────────────────────────────── -->
+<nav id="nav">
+  <a class="nav-logo" href="#hero">AS<span>.</span></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#leadership">Leadership</a></li>
+    <!-- <li><a href="#ai-chat">Ask AI</a></li> -->
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-tag">Available for opportunities</div>
+        <h1 class="hero-name">Anum<span class="accent">Saeed</span></h1>
+        <div class="hero-title">AI / ML Engineer</div>
+        <p class="hero-desc">Turning research into real systems — from explainable medical diagnostics to hallucination-mitigated vision-language models. Passionate about pushing the boundaries of what AI can do in healthcare, bioinformatics, and beyond.</p>
+        <!-- <p class="hero-desc">Building intelligent systems at the intersection of deep learning, computer vision, and generative AI. Currently pursuing MSc in AI at COMSATS University.</p> -->
+        <div class="hero-ctas">
+          <button class="btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View Projects</button>
+          <!-- <button class="btn-outline" onclick="document.getElementById('ai-chat').scrollIntoView({behavior:'smooth'})">Ask AI About Me ✦</button> -->
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">AI Projects</div></div>
+          <div class="stat-item"><div class="stat-num">1yr+</div><div class="stat-label">Industry Exp.</div></div>
+          <div class="stat-item"><div class="stat-num">2nd</div><div class="stat-label">FYP Award</div></div>
+        </div>
+      </div>
+      <div class="hero-terminal">
+        <div class="terminal-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          <span class="terminal-title">anum_saeed.py</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-comment"># AI/ML Engineer Profile</span></div>
+          <br>
+          <div class="t-line"><span class="t-key">engineer</span><span> = {</span></div>
+          <div class="t-line">&nbsp;&nbsp;<span class="t-str">"name"</span><span>: </span><span class="t-str">"Anum Saeed"</span><span>,</span></div>
+          <div class="t-line">&nbsp;&nbsp;<span class="t-str">"role"</span><span>: </span><span class="t-str">"AI/ML Engineer"</span><span>,</span></div>
+          <div class="t-line">&nbsp;&nbsp;<span class="t-str">"location"</span><span>: </span><span class="t-str">"Islamabad, PK"</span><span>,</span></div>
+          <div class="t-line">&nbsp;&nbsp;<span class="t-str">"focus"</span><span>: [</span></div>
+          <div class="t-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-str">"Computer Vision"</span><span>,</span></div>
+          <div class="t-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-str">"Machine Learning"</span><span>,</span></div>
+          <div class="t-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-str">"Generative AI"</span><span>,</span></div>
+          <div class="t-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-str">"LLM Fine-tuning"</span></div>
+          <div class="t-line">&nbsp;&nbsp;<span>],</span></div>
+          <!-- <div class="t-line">&nbsp;&nbsp;<span class="t-str">"frameworks"</span><span>: </span><span class="t-accent">[PyTorch, TF, PEFT, LoRA]</span></div> -->
+           <div class="t-line">&nbsp;&nbsp;<span class="t-str">"dl_frameworks"</span><span>: </span><span class="t-accent">[PyTorch, TF, Keras, PEFT, LoRA]</span><span>,</span></div>
+          <div class="t-line">&nbsp;&nbsp;<span class="t-str">"cv_stack"</span><span>: </span><span class="t-accent">[OpenCV, YOLO, U-Net, ViT]</span><span>,</span></div>
+          <div class="t-line">&nbsp;&nbsp;<span class="t-str">"llm_tools"</span><span>: </span><span class="t-accent">[Whisper, LLaVA, Gemini, Ollama]</span><span>,</span></div>
+          <div class="t-line">&nbsp;&nbsp;<span class="t-str">"deploy"</span><span>: </span><span class="t-accent">[FastAPI, Docker, React, GitHub]</span></div>
+          <div class="t-line"><span>}</span></div>
+          <br>
+          <div class="t-line"><span class="t-comment"># Currently:</span></div>
+          <div class="t-line"><span class="t-key">status</span><span> = </span><span class="t-str">"JRO AI @ Bahria BEST"</span></div>
+          <div class="t-line"><span class="t-key">learning</span><span> = </span><span class="t-str">"MSc AI @ COMSATS"</span></div>
+          <br>
+          <div class="t-line"><span class="t-accent">▶</span><span> </span><span class="cursor-blink"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ─────────────────────────────────────────────── -->
+<section id="skills">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">What I work with</div>
+      <h2 class="section-title">Technical <em>Expertise</em></h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">🧠</div>
+        <div class="skill-cat">ML / DL Frameworks</div>
+        <div class="skill-tags">
+          <span class="tag">PyTorch</span><span class="tag">TensorFlow</span><span class="tag">Keras</span><span class="tag">Scikit-learn</span><span class="tag">PEFT</span><span class="tag">LoRA</span><span class="tag">HuggingFace</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">✨</div>
+        <div class="skill-cat">LLM & Generative AI</div>
+        <div class="skill-tags">
+          <span class="tag">LiteLLM</span><span class="tag">Ollama</span><span class="tag">Gemini</span><span class="tag">PandasAI</span><span class="tag">LLaVA</span><span class="tag">Whisper</span><span class="tag">LangChain</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">👁</div>
+        <div class="skill-cat">Computer Vision</div>
+        <div class="skill-tags">
+          <span class="tag">OpenCV</span><span class="tag">YOLO</span><span class="tag">U-Net</span><span class="tag">Detectron2</span><span class="tag">RetinaFace</span><span class="tag">ViT</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">⚙️</div>
+        <div class="skill-cat">MLOps & Deployment</div>
+        <div class="skill-tags">
+          <span class="tag">FastAPI</span><span class="tag">Docker</span><span class="tag">React.js</span><span class="tag">Git/GitHub</span><span class="tag">PostgreSQL</span><span class="tag">MongoDB</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">💻</div>
+        <div class="skill-cat">Programming Languages</div>
+        <div class="skill-tags">
+          <span class="tag">Python</span><span class="tag">R</span><span class="tag">C#</span><span class="tag">C++</span><span class="tag">SQL</span><span class="tag">JavaScript</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔬</div>
+        <div class="skill-cat">Bioinformatics & Data</div>
+        <div class="skill-tags">
+          <span class="tag">Biopython</span><span class="tag">BLAST</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Seaborn</span><span class="tag">Matplotlib</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ───────────────────────────────────────────── -->
+<section id="projects">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">What I've built</div>
+      <h2 class="section-title">Featured <em>Projects</em></h2>
+    </div>
+    <div class="projects-filter reveal">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="genai">GenAI / LLMs</button>
+      <button class="filter-btn" data-filter="cv">Computer Vision</button>
+      <button class="filter-btn" data-filter="medical">Medical AI</button>
+      <button class="filter-btn" data-filter="ml">Classical ML</button>
+      <button class="filter-btn" data-filter="bio">Bioinformatics</button>
+      <button class="filter-btn" data-filter="web">Web / Apps</button>
+    </div>
+    <div class="projects-grid" id="projects-grid">
+
+      <div class="project-card reveal" data-cat="genai">
+        <div class="project-header"><span class="project-cat cat-genai">GenAI</span></div>
+        <div class="project-name">Vision-Language Hallucination Mitigation Framework</div>
+        <div class="project-desc">Research framework reducing hallucinations in VLMs via parameter-efficient fine-tuning. Applied LoRA adapters on open-source vision-language models.</div>
+        <div class="project-stack"><span class="stack-tag">PyTorch</span><span class="stack-tag">PEFT</span><span class="stack-tag">LoRA</span><span class="stack-tag">Python</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="genai">
+        <div class="project-header"><span class="project-cat cat-genai">GenAI</span></div>
+        <div class="project-name">AnalystAI – Conversational Data Analytics Platform</div>
+        <div class="project-desc">Natural language interface over tabular data using Gemini and PandasAI; LiteLLM abstraction enables multi-provider LLM switching without code changes.</div>
+        <div class="project-stack"><span class="stack-tag">Gemini</span><span class="stack-tag">PandasAI</span><span class="stack-tag">LiteLLM</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="genai">
+        <div class="project-header"><span class="project-cat cat-genai">GenAI</span></div>
+        <div class="project-name">Video Speech-to-Text with LLM Post-Processing</div>
+        <div class="project-desc">End-to-end pipeline: FFmpeg video ingestion → Whisper ASR → LoRA fine-tuned LLM for domain-specific correction, served via FastAPI.</div>
+        <div class="project-stack"><span class="stack-tag">Whisper</span><span class="stack-tag">LoRA</span><span class="stack-tag">FastAPI</span><span class="stack-tag">FFmpeg</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="genai">
+        <div class="project-header"><span class="project-cat cat-genai">GenAI</span></div>
+        <div class="project-name">Image-Based Question Answering Tool</div>
+        <div class="project-desc">Multimodal QA system using LLaVA for visual grounding; React frontend communicates with FastAPI/Uvicorn backend for real-time responses.</div>
+        <div class="project-stack"><span class="stack-tag">LLaVA</span><span class="stack-tag">React</span><span class="stack-tag">FastAPI</span><span class="stack-tag">Python</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="cv">
+        <div class="project-header"><span class="project-cat cat-cv">CV</span></div>
+        <div class="project-name">YOLO Object Detection & Tracking Web Application</div>
+        <div class="project-desc">Full-stack real-time object detection and tracking; YOLO inference served via FastAPI with live video stream handling through FFmpeg.</div>
+        <div class="project-stack"><span class="stack-tag">YOLO</span><span class="stack-tag">FastAPI</span><span class="stack-tag">React</span><span class="stack-tag">FFmpeg</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="cv">
+        <div class="project-header"><span class="project-cat cat-cv">CV</span></div>
+        <div class="project-name">Graph Convolutional Networks for Face Clustering</div>
+        <div class="project-desc">Applied GCNs to cluster face embeddings at scale; graph edges defined by facial similarity metrics derived from OpenCV feature extraction.</div>
+        <div class="project-stack"><span class="stack-tag">PyTorch</span><span class="stack-tag">GCN</span><span class="stack-tag">OpenCV</span><span class="stack-tag">Python</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="cv">
+        <div class="project-header"><span class="project-cat cat-cv">CV</span></div>
+        <div class="project-name">AI-Powered Mutation Impact & Gene Function Prediction</div>
+        <div class="project-desc">End-to-end bioinformatics AI platform predicting mutation impact using ML classifiers integrated with an LLM (Ollama) for explainable insights.</div>
+        <div class="project-stack"><span class="stack-tag">Ollama</span><span class="stack-tag">BioPython</span><span class="stack-tag">FastAPI</span><span class="stack-tag">React</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="medical">
+        <div class="project-header"><span class="project-cat cat-medical">Medical AI</span></div>
+        <div class="project-name">AI-Powered Dental Diagnostics with Explainable Insights</div>
+        <div class="project-desc">Deep learning classifier for dental pathology detection with Grad-CAM explainability to highlight diagnostic regions for clinical interpretability.</div>
+        <div class="project-stack"><span class="stack-tag">Keras</span><span class="stack-tag">XAI</span><span class="stack-tag">Grad-CAM</span><span class="stack-tag">OpenCV</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="medical">
+        <div class="project-header"><span class="project-cat cat-medical">Medical AI</span></div>
+        <div class="project-name">Dental X-ray Mask Generation with Tooth Count</div>
+        <div class="project-desc">U-Net segmentation model generating per-tooth masks; connected component analysis for automated tooth counting and pixel-level statistics.</div>
+        <div class="project-stack"><span class="stack-tag">U-Net</span><span class="stack-tag">CCA</span><span class="stack-tag">OpenCV</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="medical">
+        <div class="project-header"><span class="project-cat cat-medical">Medical AI</span></div>
+        <div class="project-name">Tumor Detection in Brain MRI Using Deep Learning</div>
+        <div class="project-desc">CNN-based binary classifier for MRI tumor presence detection; OpenCV preprocessing pipeline with skull-stripping and intensity normalization.</div>
+        <div class="project-stack"><span class="stack-tag">TensorFlow</span><span class="stack-tag">CNN</span><span class="stack-tag">OpenCV</span><span class="stack-tag">Sklearn</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="ml">
+        <div class="project-header"><span class="project-cat cat-ml">Classical ML</span></div>
+        <div class="project-name">Credit Scoring Model</div>
+        <div class="project-desc">Ensemble credit risk model combining XGBoost and neural network classifiers; SHAP-based feature importance for regulatory transparency.</div>
+        <div class="project-stack"><span class="stack-tag">XGBoost</span><span class="stack-tag">TensorFlow</span><span class="stack-tag">SHAP</span><span class="stack-tag">Pandas</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="ml">
+        <div class="project-header"><span class="project-cat cat-ml">Classical ML</span></div>
+        <div class="project-name">PIMA Diabetes Classification with Genetic Algorithm Feature Selection</div>
+        <div class="project-desc">Genetic algorithm-based feature selection pipeline improving classifier performance; compared against filter/wrapper baselines.</div>
+        <div class="project-stack"><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Genetic Algorithm</span><span class="stack-tag">Python</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="ml">
+        <div class="project-header"><span class="project-cat cat-ml">Classical ML</span><span class="project-date">Jul 2024</span></div>
+        <div class="project-name">Stock Prediction with LSTM</div>
+        <div class="project-desc">Time-series stock price prediction using LSTM networks with Yahoo Finance API data; includes EDA, technical indicators, and performance visualization.</div>
+        <div class="project-stack"><span class="stack-tag">TensorFlow</span><span class="stack-tag">LSTM</span><span class="stack-tag">YahooFinanceAPI</span><span class="stack-tag">Seaborn</span><span class="stack-tag">Matplotlib</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="ml">
+        <div class="project-header"><span class="project-cat cat-ml">Classical ML</span><span class="project-date">Jul 2024</span></div>
+        <div class="project-name">Predictive Modeling with Linear Regression</div>
+        <div class="project-desc">End-to-end regression pipeline with data preprocessing, feature engineering, model training, and evaluation using Sklearn; rich visualizations with Seaborn and Matplotlib.</div>
+        <div class="project-stack"><span class="stack-tag">Sklearn</span><span class="stack-tag">Pandas</span><span class="stack-tag">Matplotlib</span><span class="stack-tag">Seaborn</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="ml">
+        <div class="project-header"><span class="project-cat cat-ml">Classical ML</span><span class="project-date">Jul 2024</span></div>
+        <div class="project-name">Titanic Classification</div>
+        <div class="project-desc">Classic ML classification challenge with feature engineering, EDA, and ensemble model comparison using TensorFlow, Keras, and Scikit-learn pipelines.</div>
+        <div class="project-stack"><span class="stack-tag">Pandas</span><span class="stack-tag">Sklearn</span><span class="stack-tag">TensorFlow</span><span class="stack-tag">Keras</span><span class="stack-tag">NumPy</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="cv">
+        <div class="project-header"><span class="project-cat cat-cv">CV</span><span class="project-date">Dec 2025</span></div>
+        <div class="project-name">Intelligent Face Search System</div>
+        <div class="project-desc">Enterprise face search system built with .NET MVC backend and Python inference service; supports fast image retrieval and identity matching across large datasets.</div>
+        <div class="project-stack"><span class="stack-tag">.NET MVC</span><span class="stack-tag">Python</span><span class="stack-tag">HTML</span><span class="stack-tag">CSS</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="cv">
+        <div class="project-header"><span class="project-cat cat-cv">CV</span><span class="project-date">Nov 2025</span></div>
+        <div class="project-name">Face Recognition System with Video Media</div>
+        <div class="project-desc">Real-time face recognition pipeline processing live video streams; TensorFlow models integrated with FFMPEG for decoding and SSMS for identity persistence.</div>
+        <div class="project-stack"><span class="stack-tag">OpenCV</span><span class="stack-tag">TensorFlow</span><span class="stack-tag">FFMPEG</span><span class="stack-tag">SSMS</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="cv">
+        <div class="project-header"><span class="project-cat cat-cv">CV</span><span class="project-date">Sep 2025</span></div>
+        <div class="project-name">Face Recognition System with Image Media</div>
+        <div class="project-desc">Dockerized face recognition system for static image datasets; Scikit-learn classifiers over OpenCV-extracted embeddings with SQL-backed identity storage.</div>
+        <div class="project-stack"><span class="stack-tag">OpenCV</span><span class="stack-tag">Sklearn</span><span class="stack-tag">SQL</span><span class="stack-tag">Docker</span><span class="stack-tag">Python</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="genai">
+        <div class="project-header"><span class="project-cat cat-genai">GenAI</span><span class="project-date">Feb 2025</span></div>
+        <div class="project-name">Image Captioning Using Deep Learning: CNNs & RNNs</div>
+        <div class="project-desc">CNN encoder + RNN decoder architecture for automatic image captioning; uses transfer learning for visual feature extraction with NLP-based caption generation.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">OpenCV</span><span class="stack-tag">NLP</span><span class="stack-tag">CNN</span><span class="stack-tag">RNN</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="genai">
+        <div class="project-header"><span class="project-cat cat-genai">GenAI</span><span class="project-date">Jan 2025</span></div>
+        <div class="project-name">Sentiment Analysis Using TextBlob & NLP</div>
+        <div class="project-desc">NLP-based sentiment classification pipeline using TextBlob and NLTK; includes text preprocessing, polarity scoring, and multi-class sentiment visualization.</div>
+        <div class="project-stack"><span class="stack-tag">TextBlob</span><span class="stack-tag">NLTK</span><span class="stack-tag">Pandas</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="genai">
+        <div class="project-header"><span class="project-cat cat-genai">GenAI</span><span class="project-date">Aug 2024</span></div>
+        <div class="project-name">General Purpose Chatbot</div>
+        <div class="project-desc">Full-stack AI chatbot with FastAPI backend, Google AI integration, MongoDB for conversation history, and a responsive HTML/CSS/JavaScript frontend.</div>
+        <div class="project-stack"><span class="stack-tag">FastAPI</span><span class="stack-tag">Google API</span><span class="stack-tag">MongoDB</span><span class="stack-tag">JavaScript</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="medical">
+        <div class="project-header"><span class="project-cat cat-medical">Medical AI</span><span class="project-date">Nov 2024</span></div>
+        <div class="project-name">Image Enhancement for Medical X-rays</div>
+        <div class="project-desc">Advanced preprocessing pipeline for medical X-ray images using DeepFFT-based denoising, adaptive histogram equalization, and Fourier domain filtering for improved diagnostic clarity.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">OpenCV</span><span class="stack-tag">DeepFFT</span><span class="stack-tag">Pillow</span><span class="stack-tag">Sklearn</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="medical">
+        <div class="project-header"><span class="project-cat cat-medical">Medical AI</span><span class="project-date">Sep 2024</span></div>
+        <div class="project-name">Periodontitis Detection Using Deep Learning</div>
+        <div class="project-desc">Deep learning system detecting periodontal disease from dental X-rays using VGG architectures with PIL-based preprocessing and OpenCV augmentation pipeline.</div>
+        <div class="project-stack"><span class="stack-tag">TensorFlow</span><span class="stack-tag">VGG</span><span class="stack-tag">PIL</span><span class="stack-tag">OpenCV</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="bio">
+        <div class="project-header"><span class="project-cat cat-bio">Bioinformatics</span><span class="project-date">May 2024</span></div>
+        <div class="project-name">Sequence Alignment Tool</div>
+        <div class="project-desc">Desktop bioinformatics tool with PyQt5 GUI for pairwise and multiple sequence alignment using Biopython and Clustal Omega; results visualized with Matplotlib dendrograms.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">PyQt5</span><span class="stack-tag">Biopython</span><span class="stack-tag">Clustal Omega</span><span class="stack-tag">Matplotlib</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="bio">
+        <div class="project-header"><span class="project-cat cat-bio">Bioinformatics</span><span class="project-date">Apr 2024</span></div>
+        <div class="project-name">Biological Sequence Translation Tool</div>
+        <div class="project-desc">PyQt5 desktop application for translating nucleotide sequences to amino acids using Biopython's codon tables; supports multiple genetic code variants.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">Biopython</span><span class="stack-tag">PyQt5</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="ml">
+        <div class="project-header"><span class="project-cat cat-ml">Classical ML</span><span class="project-date">Dec 2023</span></div>
+        <div class="project-name">Evolutionary Optimization with Genetic Algorithm</div>
+        <div class="project-desc">Custom genetic algorithm implementation for combinatorial optimization problems; configurable crossover, mutation, and selection strategies with convergence analysis.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">Math</span><span class="stack-tag">Random Search</span></div>
+      </div>
+
+      <div class="project-card reveal" data-cat="web">
+        <div class="project-header"><span class="project-cat cat-web">Web / App</span><span class="project-date">Dec 2023</span></div>
+        <div class="project-name">E-Commerce Console, Desktop & Web Application</div>
+        <div class="project-desc">Full-stack e-commerce platform spanning console, WinForms desktop, and ASP.NET MVC web interfaces; SSMS (SQL Server) backend with complete CRUD operations and product management.</div>
+        <div class="project-stack"><span class="stack-tag">C#</span><span class="stack-tag">.NET MVC</span><span class="stack-tag">SSMS</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<section id="experience" style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Where I've worked</div>
+      <h2 class="section-title">Work <em>Experience</em></h2>
+    </div>
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="tl-date">Jul 2025 – Present</div>
+        <div class="tl-role">Junior Research Officer — AI/ML</div>
+        <div class="tl-company">Bahria Enterprises Systems & Technologies (BEST)</div>
+        <ul class="tl-bullets">
+          <li>Designed and optimized AI/ML pipelines for large-scale data processing and analytical workflows.</li>
+          <li>Implemented deep learning algorithms (CNNs, RNNs, GNNs) for intelligent system development.</li>
+          <li>Explored Graph Neural Networks for graph-structured data and real-world AI applications.</li>
+          <li>Conducted systematic literature reviews to integrate state-of-the-art algorithms into projects.</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">Aug 2023 – Sep 2023</div>
+        <div class="tl-role">Python Developer <span style="color:var(--text3);font-size:12px">(Internship)</span></div>
+        <div class="tl-company">CodSoft</div>
+        <ul class="tl-bullets">
+          <li>Built Python applications using REST APIs and Tkinter-based GUIs.</li>
+          <li>Implemented random library and requests-based utilities for automation tasks.</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">Jul 2023 – Aug 2023</div>
+        <div class="tl-role">Web Developer <span style="color:var(--text3);font-size:12px">(Internship)</span></div>
+        <div class="tl-company">Oasis Infobyte & LetsGrowMore</div>
+        <ul class="tl-bullets">
+          <li>Developed responsive web applications with React.js, HTML, CSS, and jQuery.</li>
+          <li>Created responsive designs improving cross-device user experience.</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">Jun 2023 – Jul 2023</div>
+        <div class="tl-role">Frontend Developer <span style="color:var(--text3);font-size:12px">(Internship)</span></div>
+        <div class="tl-company">Interns Pakistan</div>
+        <ul class="tl-bullets">
+          <li>Developed websites using PHP, JavaScript, CSS, HTML5, WordPress, jQuery, and Bootstrap.</li>
+          <li>Customized WordPress themes and plugins for responsive, interactive web pages.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div style="margin-top:60px;">
+      <div class="section-label reveal">Education</div>
+      <div class="edu-grid reveal">
+        <div class="edu-card">
+          <div class="edu-degree">MSc in Artificial Intelligence</div>
+          <div class="edu-uni">COMSATS University Islamabad</div>
+          <div class="edu-date">Feb 2026 – Present</div>
+          <div class="edu-note">Focus: advanced ML, deep learning, intelligent systems</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-degree">BSc in Bioinformatics</div>
+          <div class="edu-uni">COMSATS University Islamabad</div>
+          <div class="edu-date">Feb 2021 – Feb 2025</div>
+          <div class="edu-note">🏆 2nd place, FYP Poster Presentation — COMSATS CDC (Dec 2024)</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-degree">Higher Secondary School Certificate (HSSC)</div>
+          <div class="edu-uni">IMCG F-7/4, Islamabad</div>
+          <div class="edu-date">Aug 2018 – Aug 2020</div>
+          <div class="edu-note">Specialized in Computer Science — programming & algorithms</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-degree">Secondary School Certificate (SSC)</div>
+          <div class="edu-uni">FFMS Chak Shahzad Islamabad</div>
+          <div class="edu-date">Mar 2016 – Jul 2018</div>
+          <div class="edu-note">Majors: Computer Science · Mathematics · Physics · Chemistry</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:60px;" class="reveal">
+      <div class="section-label" style="margin-bottom:20px;">Certifications</div>
+      <div class="awards-row">
+        <div class="award-chip"><span class="award-icon">📜</span> Image Captioning with ML — Google (Feb 2025)</div>
+        <div class="award-chip"><span class="award-icon">📜</span> Computer Vision — Kaggle (Jan 2025)</div>
+        <div class="award-chip"><span class="award-icon">📜</span> Intro to NLP — Great Learning (Aug 2024)</div>
+        <div class="award-chip"><span class="award-icon">📜</span> Bioinformatics: Linux, Bash & R — FutureLearn (Aug 2023)</div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px;" class="reveal">
+      <div class="section-label" style="margin-bottom:20px;">Achievements & Recognitions</div>
+      <div class="awards-row">
+        <div class="award-chip"><span class="award-icon">🏆</span> 2nd Place FYP — COMSATS CDC (Dec 2024)</div>
+        <div class="award-chip"><span class="award-icon">🌟</span> Best Ambassador ICRCS-2023 (Mar 2023)</div>
+        <div class="award-chip"><span class="award-icon">🎖️</span> Best Volunteer — IEEE Outreach & WiE (Jan 2023)</div>
+        <div class="award-chip"><span class="award-icon">🎤</span> Active Participant — Extempore Speech (Dec 2022)</div>
+        <div class="award-chip"><span class="award-icon">🎪</span> Active Organizer — Zauq Mela × IEEE WiE (Dec 2022)</div>
+        <div class="award-chip"><span class="award-icon">📋</span> Organizer — CV Writing Session, IEEE COT (Mar 2023)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LEADERSHIP & VOLUNTEERSHIP ─────────────────────────────── -->
+<section id="leadership" style="background:var(--bg); border-top:1px solid var(--border);">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Beyond the code</div>
+      <h2 class="section-title">Leadership &amp; <em>Community</em></h2>
+    </div>
+
+    <div class="lv-grid">
+
+      <!-- Leadership -->
+      <div class="lv-column reveal">
+        <div class="lv-col-label">
+          <span class="lv-col-icon">★</span>
+          Leadership Roles
+        </div>
+        <div class="lv-cards">
+
+          <div class="lv-card">
+            <div class="lv-card-top">
+              <div class="lv-role">Director, Community Outreach Team</div>
+              <div class="lv-date">Feb 2023 – Aug 2023</div>
+            </div>
+            <div class="lv-org">IEEE CUI</div>
+            <div class="lv-detail">Led community outreach initiatives, organized events, and represented IEEE CUI externally to expand the society's impact.</div>
+          </div>
+
+          <div class="lv-card">
+            <div class="lv-card-top">
+              <div class="lv-role">Secretary General</div>
+              <div class="lv-date">Feb 2023 – Aug 2023</div>
+            </div>
+            <div class="lv-org">IEEE Women in Engineering CUI</div>
+            <div class="lv-detail">Directed operations and strategic planning for WiE chapter; coordinated cross-team projects and managed member communications.</div>
+          </div>
+
+          <div class="lv-card">
+            <div class="lv-card-top">
+              <div class="lv-role">Ambassador, ICRCS'2023</div>
+              <div class="lv-date">Feb 2023 – Mar 2023</div>
+            </div>
+            <div class="lv-org">IEEE Computer Society, Bangladesh</div>
+            <div class="lv-detail">Served as official Ambassador for the International Conference on Robotics and Computer Science 2023, representing and promoting the event.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Volunteership -->
+      <div class="lv-column reveal">
+        <div class="lv-col-label">
+          <span class="lv-col-icon">♥</span>
+          Volunteership
+        </div>
+        <div class="lv-cards">
+
+          <div class="lv-card">
+            <div class="lv-card-top">
+              <div class="lv-role">Event Management &amp; Marketing</div>
+              <div class="lv-date">Sep 2022 – Feb 2023</div>
+            </div>
+            <div class="lv-org">IEEE WiE CUI</div>
+            <div class="lv-detail">Planned and executed student events; handled marketing materials, logistics, and on-ground coordination for large-scale IEEE events.</div>
+          </div>
+
+          <div class="lv-card">
+            <div class="lv-card-top">
+              <div class="lv-role">Photographer</div>
+              <div class="lv-date">Sep 2022 – Mar 2023</div>
+            </div>
+            <div class="lv-org">Biome CUI</div>
+            <div class="lv-detail">Documented university events and activities; produced photography used across official channels and publications.</div>
+          </div>
+
+          <div class="lv-card">
+            <div class="lv-card-top">
+              <div class="lv-role">Graphic Designer &amp; Content Writer</div>
+              <div class="lv-date">Sep 2022 – Sep 2023</div>
+            </div>
+            <div class="lv-org">Al-Sah him</div>
+            <div class="lv-detail">Created visual design assets and written content for organizational campaigns and social media presence.</div>
+          </div>
+
+          <div class="lv-card">
+            <div class="lv-card-top">
+              <div class="lv-role">Video Editor &amp; Graphic Designer</div>
+              <div class="lv-date">Dec 2022 – Dec 2023</div>
+            </div>
+            <div class="lv-org">Teach For Pakistan CUI</div>
+            <div class="lv-detail">Produced promotional videos and graphic materials supporting education advocacy; edited content for social media campaigns.</div>
+          </div>
+
+          <div class="lv-card">
+            <div class="lv-card-top">
+              <div class="lv-role">Event Manager</div>
+              <div class="lv-date">Jan 2023 – Mar 2023</div>
+            </div>
+            <div class="lv-org">Youngistan CUI</div>
+            <div class="lv-detail">Managed planning and execution of youth-focused events, coordinating volunteers, speakers, and venue logistics.</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── AI CHAT ─────────────────────────────────────────────── -->
+<!-- <section id="ai-chat">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Powered by Claude</div>
+      <h2 class="section-title">Ask <em>AI</em> About Me</h2>
+    </div>
+    <div class="chat-wrapper">
+      <div class="chat-info reveal">
+        <p class="chat-desc">Have a question about my experience, projects, or skills? This AI assistant is trained on my portfolio and can answer as me — try it.</p>
+        <div class="chat-prompts">
+          <button class="chat-prompt-btn" onclick="sendPrompt(this.textContent.replace('→  ',''))">What projects have you built with LLMs?</button>
+          <button class="chat-prompt-btn" onclick="sendPrompt(this.textContent.replace('→  ',''))">Tell me about your computer vision work.</button>
+          <button class="chat-prompt-btn" onclick="sendPrompt(this.textContent.replace('→  ',''))">What's your current role?</button>
+          <button class="chat-prompt-btn" onclick="sendPrompt(this.textContent.replace('→  ',''))">What makes you a strong AI/ML candidate?</button>
+          <button class="chat-prompt-btn" onclick="sendPrompt(this.textContent.replace('→  ',''))">What tech stack do you use most?</button>
+        </div>
+      </div>
+      <div class="chat-box reveal">
+        <div class="chat-header">
+          <div class="chat-avatar">A</div>
+          <div>
+            <div class="chat-name">Anum Saeed — AI Assistant</div>
+            <div class="chat-status">Online</div>
+          </div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="msg msg-bot">
+            <div class="msg-bubble">Hi! I'm an AI assistant representing Anum's portfolio. Ask me anything about her projects, skills, experience, or background. 👋</div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Ask about skills, projects, experience..." onkeydown="if(event.key==='Enter') sendChat()">
+          <button id="chat-send" onclick="sendChat()">Send →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- ── CONTACT ─────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="reveal">
+        <div class="section-label">Get in touch</div>
+        <div class="contact-cta-text">Let's build something <em style="font-family:var(--font-serif);color:var(--gold)">intelligent</em> together.</div>
+        <p class="contact-cta-sub">Open to AI/ML engineering roles, research collaborations, and freelance projects.</p>
+        <button class="btn-primary" onclick="window.location.href='mailto:anumsaeed612@gmail.com'">Send an Email</button>
+      </div>
+      <div class="contact-links reveal">
+        <a class="contact-link" href="mailto:anumsaeed612@gmail.com">
+          <div class="contact-link-icon">✉</div>
+          <div><div style="font-weight:600;font-family:var(--font-head)">Email</div><div style="font-size:12px;color:var(--text2)">anumsaeed612@gmail.com</div></div>
+        </a>
+        <a class="contact-link" href="https://linkedin.com/in/anum-saeed" target="_blank">
+          <div class="contact-link-icon">in</div>
+          <div><div style="font-weight:600;font-family:var(--font-head)">LinkedIn</div><div style="font-size:12px;color:var(--text2)">linkedin.com/in/anum-saeed</div></div>
+        </a>
+        <a class="contact-link" href="https://github.com/anumsaeed0" target="_blank">
+          <div class="contact-link-icon">⌥</div>
+          <div><div style="font-weight:600;font-family:var(--font-head)">GitHub</div><div style="font-size:12px;color:var(--text2)">github.com/anumsaeed0</div></div>
+        </a>
+        <!-- <a class="contact-link" href="tel:+923415101961">
+          <div class="contact-link-icon">☏</div>
+          <div><div style="font-weight:600;font-family:var(--font-head)">Phone</div><div style="font-size:12px;color:var(--text2)">+92-341-5101961</div></div>
+        </a> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Built with ✦ by Anum Saeed &nbsp;·&nbsp; AI/ML Engineer &nbsp;·&nbsp; Islamabad, Pakistan</div>
+</footer>
+
+<script>
+// ── CURSOR ──────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.transform=`translate(${mx}px,${my}px)`;});
+(function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(animRing);})();
+
+// ── NAV SCROLL ──────────────────────────────────────────────
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',scrollY>40);
+});
+
+// ── REVEAL ON SCROLL ────────────────────────────────────────
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*80); } });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ── PROJECT FILTER ──────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.project-card').forEach(card=>{
+      const show = f==='all' || card.dataset.cat===f;
+      if(show){
+        card.style.display='flex';
+        requestAnimationFrame(()=>{
+          card.style.opacity='1';
+          card.style.transform='translateY(0) scale(1)';
+          card.style.pointerEvents='';
+        });
+      } else {
+        card.style.opacity='0';
+        card.style.transform='translateY(16px) scale(0.96)';
+        card.style.pointerEvents='none';
+        setTimeout(()=>{ if(card.style.opacity==='0') card.style.display='none'; },300);
+      }
+    });
+  });
+});
+
+// ── AI CHAT ─────────────────────────────────────────────────
+const SYSTEM_PROMPT = `You are an AI assistant for Anum Saeed's portfolio website. You speak in first person as Anum, answering questions about her background, skills, projects, and experience. Be concise, friendly, and professional.
+
+Key facts about Anum:
+- AI/ML Engineer based in Islamabad, Pakistan
+- Currently Junior Research Officer (AI) at Bahria Enterprises Systems & Technologies — BEST (Jul 2025–Present): develops AI/ML pipelines, implements DL algorithms, explores GNNs, conducts literature reviews
+- Pursuing MSc in Artificial Intelligence at COMSATS University Islamabad (Feb 2026–Present)
+- BSc in Bioinformatics from COMSATS (Feb 2021–Feb 2025), won 2nd place at COMSATS CDC FYP poster presentation (Dec 2024)
+- HSSC from IMCG F-7/4 (2018–2020), SSC from FFMS Chak Shahzad (2016–2018)
+
+INTERNSHIPS:
+- Python Developer at CodSoft (Aug–Sep 2023): Python apps, Tkinter GUIs, REST APIs
+- Web Developer at Oasis Infobyte & LetsGrowMore (Jul–Aug 2023): React.js, HTML, CSS, jQuery
+- Frontend Developer at Interns Pakistan (Jun–Jul 2023): PHP, WordPress, Bootstrap, JavaScript
+
+TECHNICAL SKILLS:
+- Programming: Python, R, C#, C, C++, SQL
+- ML/DL: Scikit-learn, TensorFlow, Keras, PyTorch, NLTK, ViT, GCNs, PEFT, LoRA
+- Computer Vision: OpenCV, YOLO, U-Net, Detectron2, Albumentations, RetinaFace
+- LLM/GenAI: LiteLLM, Ollama, Gemini, PandasAI, LLaVA, Whisper, LangChain
+- Data: Pandas, NumPy, SciPy, Matplotlib, Seaborn, ggplot2
+- Bioinformatics: Biopython, BLAST, Clustal Omega, Galaxy
+- Web: HTML, CSS, JavaScript, Node.js, React.js, .NET MVC, FastAPI
+- Databases: MySQL, MongoDB, Microsoft SQL Server (SSMS)
+- DevOps: Git, GitHub, Docker
+
+PROJECTS (30+):
+GenAI/LLMs: Vision-Language Hallucination Mitigation Framework (PyTorch, PEFT, LoRA), AnalystAI Conversational Data Analytics (Gemini, PandasAI, LiteLLM), Video Speech-to-Text with LLM Post-Processing (Whisper, LoRA, FastAPI, FFmpeg), Image-Based QA Tool (LLaVA, React, FastAPI), Image Captioning CNNs+RNNs, Sentiment Analysis (TextBlob, NLTK), General Purpose Chatbot (FastAPI, Google API, MongoDB)
+Computer Vision: YOLO Object Detection & Tracking Web App (FastAPI, React, FFmpeg), GCN Face Clustering (PyTorch, OpenCV), AI-Powered Mutation Impact & Gene Prediction (Ollama, FastAPI), Intelligent Face Search System (.NET MVC), Face Recognition with Video Media (TensorFlow, FFMPEG), Face Recognition with Image Media (Docker, SQL)
+Medical AI: AI-Powered Dental Diagnostics with XAI (Keras, Grad-CAM), Dental X-ray Mask Generation (U-Net, CCA), Brain MRI Tumor Detection (TensorFlow, CNN), Image Enhancement for Medical X-rays (DeepFFT), Periodontitis Detection (VGG, TensorFlow)
+Classical ML: PIMA Diabetes Classification with Genetic Algorithm, Credit Scoring Model (XGBoost, SHAP), Stock Prediction LSTM, Predictive Modeling with Linear Regression, Titanic Classification
+Bioinformatics: Sequence Alignment Tool (Biopython, Clustal Omega, PyQt5), Biological Sequence Translation Tool, Evolutionary Optimization with Genetic Algorithm
+Web/Apps: E-Commerce Console + Desktop + Web App (C#, .NET MVC, SSMS)
+
+LEADERSHIP:
+- Director, IEEE Community Outreach Team, IEEE CUI (Feb–Aug 2023)
+- Secretary General, IEEE Women in Engineering CUI (Feb–Aug 2023)
+- Ambassador ICRCS'2023, IEEE Computer Society Bangladesh (Feb–Mar 2023)
+
+VOLUNTEERSHIP:
+- Event Management & Marketing — IEEE WiE CUI (Sep 2022–Feb 2023)
+- Photographer — Biome CUI (Sep 2022–Mar 2023)
+- Graphic Designer & Content Writer — Al-Sah him (Sep 2022–Sep 2023)
+- Video Editor & Graphic Designer — Teach For Pakistan CUI (Dec 2022–Dec 2023)
+- Event Manager — Youngistan CUI (Jan–Mar 2023)
+
+CERTIFICATIONS: Image Captioning with ML (Google, Feb 2025), Computer Vision (Kaggle, Jan 2025), Intro to NLP (Great Learning, Aug 2024), Bioinformatics: Linux/Bash/R (FutureLearn, Aug 2023)
+
+ACHIEVEMENTS: 2nd place FYP (COMSATS CDC, Dec 2024), Best Ambassador ICRCS-2023 (Mar 2023), Best Volunteer IEEE (Jan 2023), Active Organizer Zauq Mela (Dec 2022)
+
+Contact: anumsaeed612@gmail.com | GitHub: anumsaeed0 | LinkedIn: anum-saeed- | Phone: +92-341-5101961
+
+Keep answers to 2-4 sentences unless a detailed technical answer is needed.`;
+
+let chatHistory = [];
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  appendMsg(msg, 'user');
+  chatHistory.push({role:'user', content: msg});
+  const typingId = appendTyping();
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory
+      })
+    });
+    const data = await res.json();
+    removeTyping(typingId);
+    const reply = data.content?.find(b=>b.type==='text')?.text || "Sorry, I couldn't respond right now.";
+    appendMsg(reply, 'bot');
+    chatHistory.push({role:'assistant', content: reply});
+  } catch(e) {
+    removeTyping(typingId);
+    appendMsg("Something went wrong. Please try again.", 'bot');
+  }
+}
+
+function sendPrompt(text) {
+  document.getElementById('chat-input').value = text;
+  sendChat();
+  document.getElementById('ai-chat').scrollIntoView({behavior:'smooth'});
+}
+
+function appendMsg(text, who) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = `msg msg-${who}`;
+  div.innerHTML = `<div class="msg-bubble">${text}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+let typingCounter = 0;
+function appendTyping() {
+  const id = ++typingCounter;
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg msg-bot';
+  div.id = 'typing-'+id;
+  div.innerHTML = `<div class="msg-bubble typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return id;
+}
+function removeTyping(id) {
+  const el = document.getElementById('typing-'+id);
+  if(el) el.remove();
+}
+</script>
+</body>
+</html>
